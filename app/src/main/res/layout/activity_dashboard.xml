@@ -101,6 +101,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/kcal_cal"
             android:layout_width="150dp"
             app:cardCornerRadius="20dp"
             android:elevation="15dp"
@@ -113,7 +114,6 @@
             app:cardElevation="12dp">
 
             <LinearLayout
-                android:id="@+id/cal_calculator"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"

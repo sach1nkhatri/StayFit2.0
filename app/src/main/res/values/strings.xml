@@ -17,5 +17,7 @@
     <string name="workout_planner">Workout Planner</string>
     <string name="task_to_do">Task To Do</string>
     <string name="settings">Settings</string>
+    <string name="calorie_result">Your calculated calorie intake is %d calories.</string>
+    <string name="invalid_input">Invalid input. Please enter valid values.</string>
     <string name="home">Home</string>/>
 </resources>
