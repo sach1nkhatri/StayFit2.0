@@ -13,7 +13,9 @@ class Dashboard : AppCompatActivity() {
     private lateinit var bmiBtn: CardView
     private lateinit var bmrBtn: CardView
     private lateinit var kcalBtn: CardView
-    @SuppressLint("MissingInflatedId")
+    private lateinit var taskBtn: CardView
+    private lateinit var setBtn: CardView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,6 +24,8 @@ class Dashboard : AppCompatActivity() {
         bmiBtn = findViewById(R.id.bmi_cal)
         bmrBtn = findViewById(R.id.bmr_cal)
         kcalBtn = findViewById(R.id.kcal_cal)
+        taskBtn = findViewById(R.id.task_to_do)
+        setBtn = findViewById(R.id.settings_card)
 
         bmiBtn.setOnClickListener {
             val intent = Intent(this@Dashboard, BmiCalculator::class.java)
@@ -38,6 +42,16 @@ class Dashboard : AppCompatActivity() {
             startActivity(intent)
         }
 
-    }
+        taskBtn.setOnClickListener {
+            val intent = Intent(this@Dashboard, TaskActivity::class.java)
+            startActivity(intent)
+        }
 
+        setBtn.setOnClickListener {
+            val intent = Intent(this@Dashboard, SettingsActivity::class.java)
+            startActivity(intent)
+
+        }
+
+    }
 }

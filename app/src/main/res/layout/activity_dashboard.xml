@@ -1,39 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:background="@drawable/splash_bg"
-    android:layout_height="match_parent"
-    tools:context=".Dashboard">
-    <View
-        android:id="@+id/top_view"
-        android:layout_width="wrap_content"
-        android:layout_height="200sp"
-        android:background="@drawable/dash_view" />
+    android:layout_height="match_parent">
 
-    <GridLayout
+    <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="-80dp"
-        android:rowCount="4"
-        android:columnCount="2"
-        android:layout_marginLeft="24sp"
-        android:layout_marginRight="24sp"
-        android:layout_below="@+id/top_view">
+        android:background="@drawable/splash_bg"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".Dashboard">
+
+
+        <View
+            android:id="@+id/top_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/dash_view"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="-80dp"
+            android:layout_marginLeft="24sp"
+            android:layout_marginRight="24sp"
+            tools:ignore="UselessLeaf">
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginTop="-60sp"
+            android:layout_marginBottom="50sp"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:text="@string/home" />
+
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/bmi_cal"
-            android:layout_width="150dp"
-            app:cardCornerRadius="20dp"
+            android:id="@+id/task_to_do"
+            android:layout_width="350dp"
+            app:cardCornerRadius="50dp"
             android:elevation="15dp"
+            android:layout_gravity="center"
             android:layout_height="150dp"
             android:layout_margin="15dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_row="1"
             app:cardElevation="12dp">
 
             <LinearLayout
@@ -46,14 +70,14 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/point_icon"
+                    android:src="@drawable/task_icon"
                     android:layout_gravity="center_horizontal"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bmi_calculator"
+                    android:text="@string/task_to_do"
                     android:layout_gravity="center_horizontal"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -61,18 +85,55 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-
         <androidx.cardview.widget.CardView
-            android:id="@+id/bmr_cal"
-            android:layout_width="150dp"
-            app:cardCornerRadius="20dp"
+            android:id="@+id/bmi_cal"
+            android:layout_width="350dp"
+            app:cardCornerRadius="50dp"
             android:elevation="15dp"
+            android:layout_gravity="center"
             android:layout_height="150dp"
             android:layout_margin="15dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_row="2"
+            app:cardElevation="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_bg"
+                android:gravity="center"
+                android:hapticFeedbackEnabled="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/point_icon"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/bmi_calculator"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bmr_cal"
+            android:layout_width="350dp"
+            app:cardCornerRadius="50dp"
+            android:elevation="15dp"
+            android:layout_gravity="center"
+            android:layout_height="150dp"
+            android:layout_margin="15dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             app:cardElevation="12dp">
 
             <LinearLayout
@@ -102,15 +163,15 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/kcal_cal"
-            android:layout_width="150dp"
-            app:cardCornerRadius="20dp"
+            android:layout_width="350dp"
+            app:cardCornerRadius="50dp"
             android:elevation="15dp"
+            android:layout_gravity="center"
             android:layout_height="150dp"
             android:layout_margin="15dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_row="2"
+
             app:cardElevation="12dp">
 
             <LinearLayout
@@ -138,54 +199,17 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/task_to_do"
-            android:layout_width="150dp"
-            app:cardCornerRadius="20dp"
-            android:elevation="15dp"
-            android:layout_height="150dp"
-            android:layout_margin="15dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_row="1"
-            app:cardElevation="12dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@drawable/card_bg"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/task_icon"
-                    android:layout_gravity="center_horizontal"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/task_to_do"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="150dp"
-            app:cardCornerRadius="20dp"
+            android:layout_width="350dp"
+            app:cardCornerRadius="30dp"
             android:elevation="15dp"
             android:layout_margin="15dp"
             android:layout_height="150dp"
+            android:layout_gravity="center"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_row="3"
             app:cardElevation="12dp">
 
             <LinearLayout
@@ -215,15 +239,14 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/settings_card"
-            android:layout_width="150dp"
-            app:cardCornerRadius="20dp"
+            android:layout_width="350dp"
+            app:cardCornerRadius="30dp"
             android:elevation="15dp"
             android:layout_height="150dp"
             android:layout_margin="15dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_row="3"
+            android:layout_gravity="center"
             app:cardElevation="12dp">
 
             <LinearLayout
@@ -250,22 +273,5 @@
                     android:textColor="@color/white"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-
-
-
-    </GridLayout>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:text="@string/home" />
-
-
-</RelativeLayout>
+    </LinearLayout>
+</ScrollView>
