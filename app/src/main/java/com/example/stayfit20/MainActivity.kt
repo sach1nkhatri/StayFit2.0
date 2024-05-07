@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val thread = Thread {
             while (progressStatus < 100) {
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(30)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
