@@ -1,24 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:background="@drawable/splash_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TaskActivity">
+    android:background="@drawable/splash_bg"
+    android:padding="20dp"
+    tools:context=".TaskToDo">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="428dp"
-        android:gravity="center"
-        android:text="Task To Do Under Construction"
+        android:id="@+id/titletextview"
+        android:text="@string/add_new_task"
+        android:fontFamily="@font/orange"
         android:textColor="@color/white"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_margin="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/round_gradient_cor">
+
+        <EditText
+            android:id="@+id/titleinput"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_margin="10dp"
+            android:background="#3000B0FF"
+            android:hint="@string/title"
+            android:padding="10dp"
+            android:textColorHint="@color/white"
+            tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/descriptioninput"
+            android:hint="@string/decription"
+            android:textColorHint="@color/white"
+            android:background="#3000B0FF"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:lines="10"
+            android:gravity="top"
+            tools:ignore="Autofill,TextFields" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/savebtn"
+        android:text="@string/save_note"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/white"
+        android:textColor="#000000"/>
+
+
+</LinearLayout>

@@ -36,6 +36,12 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="decription">Decription</string>
+    <string name="add_new_task">Add new Task</string>
+    <string name="title">Title</string>
+    <string name="save_note">SAVE NOTE</string>
+    <string name="add_new_note">Add new note</string>
+    <string name="tasks">Tasks</string>
     />
 
 </resources>

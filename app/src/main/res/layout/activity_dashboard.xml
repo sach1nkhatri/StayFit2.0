@@ -41,21 +41,22 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/white"
+            android:fontFamily="@font/orange"
             android:layout_marginTop="-60sp"
             android:layout_marginBottom="50sp"
             android:textStyle="bold"
-            android:textSize="25sp"
+            android:textSize="35sp"
             android:text="@string/home" />
 
 
         <androidx.cardview.widget.CardView
             android:id="@+id/task_to_do"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             app:cardCornerRadius="50dp"
             android:elevation="15dp"
             android:layout_gravity="center"
             android:layout_height="150dp"
-            android:layout_margin="15dp"
+            android:layout_margin="25dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             app:cardElevation="12dp">
@@ -87,12 +88,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/bmi_cal"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             app:cardCornerRadius="50dp"
             android:elevation="15dp"
             android:layout_gravity="center"
             android:layout_height="150dp"
-            android:layout_margin="15dp"
+            android:layout_margin="25dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             app:cardElevation="12dp">
@@ -126,12 +127,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/bmr_cal"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             app:cardCornerRadius="50dp"
             android:elevation="15dp"
             android:layout_gravity="center"
             android:layout_height="150dp"
-            android:layout_margin="15dp"
+            android:layout_margin="25dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             app:cardElevation="12dp">
@@ -163,12 +164,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/kcal_cal"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             app:cardCornerRadius="50dp"
             android:elevation="15dp"
             android:layout_gravity="center"
             android:layout_height="150dp"
-            android:layout_margin="15dp"
+            android:layout_margin="25dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
 
@@ -202,11 +203,11 @@
 
 
         <androidx.cardview.widget.CardView
-            android:layout_width="350dp"
-            app:cardCornerRadius="30dp"
+            android:layout_width="match_parent"
+            app:cardCornerRadius="50dp"
             android:elevation="15dp"
-            android:layout_margin="15dp"
             android:layout_height="150dp"
+            android:layout_margin="25dp"
             android:layout_gravity="center"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
@@ -239,11 +240,11 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/settings_card"
-            android:layout_width="350dp"
-            app:cardCornerRadius="30dp"
+            android:layout_width="match_parent"
+            app:cardCornerRadius="50dp"
             android:elevation="15dp"
             android:layout_height="150dp"
-            android:layout_margin="15dp"
+            android:layout_margin="25dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_gravity="center"
