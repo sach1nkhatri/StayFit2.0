@@ -13,20 +13,12 @@
         android:theme="@style/Theme.StayFit20"
         tools:targetApi="31">
         <activity
-            android:name=".ItemView"
-            android:exported="false" />
-        <activity
-            android:name=".Recycler_view"
-            android:exported="false" />
+            android:name=".SignInPage"
+            android:exported="true"/>
+
         <activity
             android:name=".TaskActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".SettingsActivity"
             android:exported="true"
@@ -45,7 +37,14 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".login"
             android:exported="true" />

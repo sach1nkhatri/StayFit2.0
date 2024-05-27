@@ -10,6 +10,10 @@
     <string name="male">Male</string>
     <string name="bmr_calculator">BMR calculator</string>
     <string name="username">Username</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="sign_in">Sign In</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="social_login">Social Login</string>
@@ -42,6 +46,7 @@
     <string name="save_note">SAVE NOTE</string>
     <string name="add_new_note">Add new note</string>
     <string name="tasks">Tasks</string>
+    <string name="signin">SignIn</string>
     />
 
 </resources>

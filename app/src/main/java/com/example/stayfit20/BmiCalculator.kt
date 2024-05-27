@@ -40,7 +40,7 @@ class BmiCalculator : AppCompatActivity() {
                 val gender = if (maleRadioButton.isChecked) "male" else "female"
 
                 val bmi = if (gender == "male") {
-                    1.3f * (weightInKG / (heightInMeters * heightInMeters)) - 16
+                    1.3f * (weightInKG / (heightInMeters * heightInMeters)) - 13
                 } else {
                     1.3f * (weightInKG / (heightInMeters * heightInMeters)) - 11
                 }
