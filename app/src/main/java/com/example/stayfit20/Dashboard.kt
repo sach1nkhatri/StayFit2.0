@@ -43,7 +43,7 @@ class Dashboard : AppCompatActivity() {
         }
 
         taskBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, TaskActivity::class.java)
+            val intent = Intent(this@Dashboard, AddTaskActivity::class.java)
             startActivity(intent)
         }
 
