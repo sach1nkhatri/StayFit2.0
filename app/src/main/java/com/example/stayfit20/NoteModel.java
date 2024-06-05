@@ -3,12 +3,24 @@ package com.example.stayfit20;
 import com.google.firebase.Timestamp;
 
 public class NoteModel {
-    String title;
-    String description;
-    Timestamp timestamp;
+    private String title;
+    private String description;
+    private Timestamp timestamp;
+    private String docId; // Correct the docId field
 
+    // Default constructor
+    public NoteModel() {
+    }
 
+    // Parameterized constructor
+    public NoteModel(String title, String description, Timestamp timestamp, String docId) {
+        this.title = title;
+        this.description = description;
+        this.timestamp = timestamp;
+        this.docId = docId;
+    }
 
+    // Getters and Setters
     public String getTitle() {
         return title;
     }
@@ -25,19 +37,23 @@ public class NoteModel {
         this.description = description;
     }
 
-    public CharSequence getTimestamp() {
-        // Convert Timestamp to CharSequence (String)
-        return timestamp.toString();
+    public String getTimestamp() {
+        // Convert Timestamp to String
+        if (timestamp != null) {
+            return timestamp.toDate().toString();
+        }
+        return null;
     }
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
-    public NoteModel() {
+    public String getDocId() {
+        return docId;
     }
 
-    public boolean getDocId() {
-        return false;
+    public void setDocId(String docId) {
+        this.docId = docId;
     }
 }

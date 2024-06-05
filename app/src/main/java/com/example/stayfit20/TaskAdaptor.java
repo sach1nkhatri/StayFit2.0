@@ -9,14 +9,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TaskAdaptor extends RecyclerView.Adapter<TaskAdaptor.NoteViewHolder> {
     private OnItemClickListener listener;
-    private List<NoteModel> notes;
+    private final List<NoteModel> notes;
+    private final SimpleDateFormat inputFormat;
+    private final SimpleDateFormat outputFormat;
 
     public TaskAdaptor(List<NoteModel> notes) {
         this.notes = notes;
+        inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()); // Example input format
+        outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); // Desired output format
     }
 
     @NonNull
@@ -60,7 +68,7 @@ public class TaskAdaptor extends RecyclerView.Adapter<TaskAdaptor.NoteViewHolder
         public void bind(NoteModel note) {
             titleTextView.setText(note.getTitle());
             descriptionTextView.setText(note.getDescription());
-            timestampTextView.setText(note.getTimestamp());
+            timestampTextView.setText(formatTimestamp(note.getTimestamp()));
 
             // Set the onClickListener to open TaskDetail with the relevant data
             itemView.setOnClickListener(v -> {
@@ -70,6 +78,16 @@ public class TaskAdaptor extends RecyclerView.Adapter<TaskAdaptor.NoteViewHolder
                 intent.putExtra("docId", note.getDocId());  // Assuming docId is a property of NoteModel
                 itemView.getContext().startActivity(intent);
             });
+        }
+
+        private String formatTimestamp(String timestamp) {
+            try {
+                Date date = inputFormat.parse(timestamp);
+                return outputFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return timestamp; // If parsing fails, return the original timestamp
+            }
         }
     }
 
