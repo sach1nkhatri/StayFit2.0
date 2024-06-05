@@ -19,8 +19,7 @@
         <ImageView
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_marginStart="5sp"
-            android:src="@drawable/iconstayfit" />
+            android:src="@drawable/stayfitlogo2" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

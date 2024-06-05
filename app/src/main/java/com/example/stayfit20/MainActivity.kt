@@ -7,6 +7,15 @@ import android.os.Handler
 import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.app.Application
+import com.google.firebase.FirebaseApp
+
+class MyApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        FirebaseApp.initializeApp(this)  // Initialize Firebase here
+    }
+}
 
 
 class MainActivity : AppCompatActivity() {

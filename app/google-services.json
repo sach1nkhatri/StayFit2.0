@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "430292836279",
+    "firebase_url": "https://stayfit-ad0e0-default-rtdb.firebaseio.com",
+    "project_id": "stayfit-ad0e0",
+    "storage_bucket": "stayfit-ad0e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430292836279:android:59d01abf3901264bc99232",
+        "android_client_info": {
+          "package_name": "com.example.stayfit20"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKw-2R84_G68m2Cz_y6sr-pQq5rQuusuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

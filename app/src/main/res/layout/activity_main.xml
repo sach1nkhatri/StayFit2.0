@@ -14,20 +14,13 @@
         android:layout_width="170dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="350dp"
         android:text="@string/stay_fit"
         android:textStyle="bold"
         android:fontFamily="@font/orange"
         android:textColor="@color/white"
         android:textSize="40sp"/>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="8sp"
-        android:src="@drawable/iconstayfit"
-        android:layout_gravity="center"
-        tools:ignore="ContentDescription" />
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -35,7 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="10sp"
-        android:layout_margin="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:visibility="visible" />
 
 
