@@ -91,6 +91,15 @@ public class TaskAdaptor extends RecyclerView.Adapter<TaskAdaptor.NoteViewHolder
         }
     }
 
+    public NoteModel getNoteAtPosition(int position) {
+        return notes.get(position);
+    }
+
+    public void deleteItem(int position) {
+        notes.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }

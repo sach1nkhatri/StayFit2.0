@@ -34,10 +34,8 @@ class TaskDetail : AppCompatActivity() {
         val description = descriptionEditText.text.toString()
 
         if (title.isEmpty() && description.isEmpty()) {
-            // Display a warning if both title and description are empty
             Toast.makeText(this, "Please enter a title or description", Toast.LENGTH_SHORT).show()
         } else {
-            // Save the note to Firestore
             val note = hashMapOf(
                 "title" to title,
                 "description" to description,
