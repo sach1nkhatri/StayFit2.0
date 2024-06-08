@@ -1,7 +1,6 @@
 package com.example.stayfit20
 
 import android.content.Intent
-import android.graphics.Canvas
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -49,38 +48,28 @@ class AddTaskActivity : AppCompatActivity() {
             insets
         }
 
-        // Add ItemTouchHelper for swipe-to-delete functionality
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                val note = adapter.getNoteAtPosition(position)
-                adapter.deleteItem(position)
-                deleteFromDatabase(note.docId)
-            }
-
-            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                // Optionally add some background drawing logic here (e.g., draw a delete icon)
-            }
-        }
-
-        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        // Attach ItemTouchHelper to RecyclerView for swipe actions
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Refresh the data when returning to this activity
+        fetchDataAndPopulateRecyclerView()
+    }
+
     private fun fetchDataAndPopulateRecyclerView() {
+        // Fetch data from the database
         notesCollection.get()
             .addOnSuccessListener { result ->
                 val notesList = mutableListOf<NoteModel>()
                 for (document in result) {
                     val note = document.toObject(NoteModel::class.java)
-                    note.docId = document.id  // Set the document ID
+                    note.docId = document.id
                     notesList.add(note)
                 }
+                // Populate the RecyclerView with fetched data
                 adapter = TaskAdaptor(notesList)
                 recyclerView.adapter = adapter
             }
@@ -90,14 +79,34 @@ class AddTaskActivity : AppCompatActivity() {
             }
     }
 
-    private fun deleteFromDatabase(docId: String) {
-        notesCollection.document(docId).delete()
-            .addOnSuccessListener {
-                // Note successfully deleted from the database
+    private val simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.adapterPosition
+            val note = adapter.getNoteAtPosition(position)
+
+            if (direction == ItemTouchHelper.LEFT) {
+                // Delete the note
+                db.collection("notes").document(note.docId).delete()
+                    .addOnSuccessListener {
+                        adapter.removeNoteAtPosition(position)
+                    }
+            } else if (direction == ItemTouchHelper.RIGHT) {
+                // Edit the note
+                val intent = Intent(this@AddTaskActivity, UpdateTaskActivity::class.java)
+                intent.putExtra("title", note.title)
+                intent.putExtra("description", note.description)
+                intent.putExtra("docId", note.docId)
+                startActivity(intent)
+                adapter.notifyItemChanged(position) // Reset the swiped item
             }
-            .addOnFailureListener { exception ->
-                // Handle any errors
-                // For example, you can log the error or show a toast message
-            }
+        }
     }
 }

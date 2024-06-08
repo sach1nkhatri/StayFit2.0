@@ -6,11 +6,13 @@ public class NoteModel {
     private String title;
     private String description;
     private Timestamp timestamp;
-    private String docId;
+    private String docId; // Correct the docId field
 
+    // Default constructor
     public NoteModel() {
     }
 
+    // Parameterized constructor
     public NoteModel(String title, String description, Timestamp timestamp, String docId) {
         this.title = title;
         this.description = description;
@@ -18,6 +20,7 @@ public class NoteModel {
         this.docId = docId;
     }
 
+    // Getters and Setters
     public String getTitle() {
         return title;
     }
@@ -35,6 +38,7 @@ public class NoteModel {
     }
 
     public String getTimestamp() {
+        // Convert Timestamp to String
         if (timestamp != null) {
             return timestamp.toDate().toString();
         }

@@ -48,6 +48,20 @@
     <string name="tasks">Tasks</string>
     <string name="signin">SignIn</string>
     <string name="already_have_an_account">Already have an account?</string>
-    />
+    <string name="update_task">Update Task</string>
+    <string name="update_button">Update Note</string>
+    <string name="enter_your_bmi">Enter Your BMI</string>
+    <string name="enter_your_bmr">Enter Your BMR</string>
+    <string name="enter_your_calorie_goal">Enter Your Calorie Goal</string>
+    <string name="generate">Generate</string>
 
+
+
+    <string-array name="goals_array">
+        <item>Fat Loss</item>
+        <item>Weight Gain</item>
+        <item>Body Maintain</item>
+    </string-array>
+
+    <string name="choose_your_goal">Choose your goal</string>
 </resources>

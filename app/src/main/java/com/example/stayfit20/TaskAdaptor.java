@@ -45,6 +45,15 @@ public class TaskAdaptor extends RecyclerView.Adapter<TaskAdaptor.NoteViewHolder
         return notes.size();
     }
 
+    public NoteModel getNoteAtPosition(int position) {
+        return notes.get(position);
+    }
+
+    public void removeNoteAtPosition(int position) {
+        notes.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public class NoteViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView, descriptionTextView, timestampTextView;
 
@@ -72,7 +81,7 @@ public class TaskAdaptor extends RecyclerView.Adapter<TaskAdaptor.NoteViewHolder
 
             // Set the onClickListener to open TaskDetail with the relevant data
             itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(itemView.getContext(), TaskDetail.class);
+                Intent intent = new Intent(itemView.getContext(), UpdateTaskActivity.class);
                 intent.putExtra("title", note.getTitle());
                 intent.putExtra("description", note.getDescription());
                 intent.putExtra("docId", note.getDocId());  // Assuming docId is a property of NoteModel
@@ -89,15 +98,6 @@ public class TaskAdaptor extends RecyclerView.Adapter<TaskAdaptor.NoteViewHolder
                 return timestamp; // If parsing fails, return the original timestamp
             }
         }
-    }
-
-    public NoteModel getNoteAtPosition(int position) {
-        return notes.get(position);
-    }
-
-    public void deleteItem(int position) {
-        notes.remove(position);
-        notifyItemRemoved(position);
     }
 
     public interface OnItemClickListener {

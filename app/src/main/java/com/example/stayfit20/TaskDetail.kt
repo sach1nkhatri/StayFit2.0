@@ -10,6 +10,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 
 class TaskDetail : AppCompatActivity() {
+
     private lateinit var titleEditText: EditText
     private lateinit var descriptionEditText: EditText
     private lateinit var saveButton: Button
@@ -24,7 +25,10 @@ class TaskDetail : AppCompatActivity() {
         descriptionEditText = findViewById(R.id.descriptioninput)
         saveButton = findViewById(R.id.savebtn)
 
-        saveButton.setOnClickListener {
+        // Store the reference to saveButton in a local variable
+        val localSaveButton = saveButton
+
+        localSaveButton.setOnClickListener {
             saveNote()
         }
     }
@@ -34,8 +38,10 @@ class TaskDetail : AppCompatActivity() {
         val description = descriptionEditText.text.toString()
 
         if (title.isEmpty() && description.isEmpty()) {
+            // Display a warning if both title and description are empty
             Toast.makeText(this, "Please enter a title or description", Toast.LENGTH_SHORT).show()
         } else {
+            // Save the note to Firestore
             val note = hashMapOf(
                 "title" to title,
                 "description" to description,
@@ -46,7 +52,7 @@ class TaskDetail : AppCompatActivity() {
                 .add(note)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Note saved successfully", Toast.LENGTH_SHORT).show()
-                    finish()
+                    finish() // Close the activity after successful save
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "Failed to save note", Toast.LENGTH_SHORT).show()

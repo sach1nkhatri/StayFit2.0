@@ -203,6 +203,7 @@
 
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/workout_plan"
             android:layout_width="match_parent"
             app:cardCornerRadius="50dp"
             android:elevation="15dp"
@@ -214,7 +215,6 @@
             app:cardElevation="12dp">
 
             <LinearLayout
-                android:id="@+id/workout_plan"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"

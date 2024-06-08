@@ -15,6 +15,8 @@ class Dashboard : AppCompatActivity() {
     private lateinit var kcalBtn: CardView
     private lateinit var taskBtn: CardView
     private lateinit var setBtn: CardView
+    private lateinit var workoutBtn: CardView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +28,8 @@ class Dashboard : AppCompatActivity() {
         kcalBtn = findViewById(R.id.kcal_cal)
         taskBtn = findViewById(R.id.task_to_do)
         setBtn = findViewById(R.id.settings_card)
+        workoutBtn = findViewById(R.id.workout_plan)
+
 
         bmiBtn.setOnClickListener {
             val intent = Intent(this@Dashboard, BmiCalculator::class.java)
@@ -52,6 +56,12 @@ class Dashboard : AppCompatActivity() {
             startActivity(intent)
 
         }
+        workoutBtn.setOnClickListener {
+            val intent = Intent(this@Dashboard, WorkoutPlanner::class.java)
+            startActivity(intent)
+
+        }
+
 
     }
 }

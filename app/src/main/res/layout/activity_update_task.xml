@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/titletextview11"
-        android:text="Update Task"
+        android:text="@string/update_task"
         android:fontFamily="@font/orange"
         android:textColor="@color/white"
         android:textSize="35sp"
@@ -30,7 +30,7 @@
         android:background="@drawable/round_gradient_cor">
 
         <EditText
-            android:id="@+id/titleinput"
+            android:id="@+id/titleupdateinput"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:layout_margin="10dp"
@@ -43,7 +43,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/descriptioninput"
+            android:id="@+id/descriptionupdateinput"
             android:hint="@string/decription"
             android:textColorHint="@color/white"
             android:background="#3000B0FF"
@@ -59,11 +59,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/savebtn"
-        android:text="@string/save_note"
+        android:id="@+id/updatebtn"
+        android:text="@string/update_button"
         android:layout_gravity="center"
         android:backgroundTint="@color/white"
         android:textColor="#000000"/>
-
 
 </LinearLayout>
