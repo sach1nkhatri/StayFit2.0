@@ -3,6 +3,7 @@ package com.example.stayfit20
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,6 +25,7 @@ class AddTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
         enableEdgeToEdge()
+
         // Initialize the RecyclerView
         recyclerView = findViewById(R.id.taskRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -93,17 +95,30 @@ class AddTaskActivity : AppCompatActivity() {
             val note = adapter.getNoteAtPosition(position)
 
             if (direction == ItemTouchHelper.LEFT) {
-                // Delete the note
-                db.collection("notes").document(note.docId).delete()
-                    .addOnSuccessListener {
-                        adapter.removeNoteAtPosition(position)
+                // Show confirmation dialog before deletion
+                AlertDialog.Builder(this@AddTaskActivity)
+                    .setTitle("Delete Note")
+                    .setMessage("Are you sure you want to delete this note?")
+                    .setPositiveButton(android.R.string.yes) { dialog, which ->
+                        // Delete the note
+                        db.collection("notes").document(note.docId).delete()
+                            .addOnSuccessListener {
+                                adapter.removeNoteAtPosition(position)
+                            }
                     }
+                    .setNegativeButton(android.R.string.no) { dialog, which ->
+                        // Cancel the swipe
+                        adapter.notifyItemChanged(position)
+                    }
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show()
             } else if (direction == ItemTouchHelper.RIGHT) {
                 // Edit the note
-                val intent = Intent(this@AddTaskActivity, UpdateTaskActivity::class.java)
-                intent.putExtra("title", note.title)
-                intent.putExtra("description", note.description)
-                intent.putExtra("docId", note.docId)
+                val intent = Intent(this@AddTaskActivity, UpdateTaskActivity::class.java).apply {
+                    putExtra("title", note.title)
+                    putExtra("description", note.description)
+                    putExtra("docId", note.docId)
+                }
                 startActivity(intent)
                 adapter.notifyItemChanged(position) // Reset the swiped item
             }
