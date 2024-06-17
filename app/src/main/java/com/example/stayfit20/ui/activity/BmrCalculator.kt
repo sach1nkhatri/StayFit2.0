@@ -1,4 +1,4 @@
-package com.example.stayfit20
+package com.example.stayfit20.ui.activity
 
 import android.os.Bundle
 import android.widget.Button
@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.stayfit20.R
 
 class BmrCalculator : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

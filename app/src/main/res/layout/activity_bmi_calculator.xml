@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg"
-    tools:context=".BmiCalculator">
+    tools:context=".ui.activity.BmiCalculator">
 
     <TextView
         android:id="@+id/text_slideshow"

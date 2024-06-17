@@ -1,4 +1,4 @@
-package com.example.stayfit20
+package com.example.stayfit20.ui.activity
 
 
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import com.example.stayfit20.R
 
 class BmiCalculator : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

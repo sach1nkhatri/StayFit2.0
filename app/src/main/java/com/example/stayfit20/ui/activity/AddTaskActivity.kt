@@ -1,4 +1,4 @@
-package com.example.stayfit20
+package com.example.stayfit20.ui.activity
 
 import android.os.Bundle
 import android.widget.Button
@@ -6,10 +6,13 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.stayfit20.R
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 
-class TaskDetail : AppCompatActivity() {
+class AddTaskActivity : AppCompatActivity() {
 
     private lateinit var titleEditText: EditText
     private lateinit var descriptionEditText: EditText
@@ -19,18 +22,17 @@ class TaskDetail : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_task_detail)
+        setContentView(R.layout.activity_add_task)
 
         titleEditText = findViewById(R.id.titleinput)
         descriptionEditText = findViewById(R.id.descriptioninput)
         saveButton = findViewById(R.id.savebtn)
 
-        // Store the reference to saveButton in a local variable
-        val localSaveButton = saveButton
-
-        localSaveButton.setOnClickListener {
+        // Handle save button click
+        saveButton.setOnClickListener {
             saveNote()
         }
+
     }
 
     private fun saveNote() {
@@ -38,10 +40,8 @@ class TaskDetail : AppCompatActivity() {
         val description = descriptionEditText.text.toString()
 
         if (title.isEmpty() && description.isEmpty()) {
-            // Display a warning if both title and description are empty
             Toast.makeText(this, "Please enter a title or description", Toast.LENGTH_SHORT).show()
         } else {
-            // Save the note to Firestore
             val note = hashMapOf(
                 "title" to title,
                 "description" to description,
@@ -52,7 +52,7 @@ class TaskDetail : AppCompatActivity() {
                 .add(note)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Note saved successfully", Toast.LENGTH_SHORT).show()
-                    finish() // Close the activity after successful save
+                    finish()
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "Failed to save note", Toast.LENGTH_SHORT).show()

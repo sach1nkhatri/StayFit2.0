@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg"
     android:orientation="horizontal"
-    tools:context=".WorkoutPlanner">
+    tools:context=".ui.activity.WorkoutPlanner">
 
     <TextView
         android:id="@+id/textView3"

@@ -1,4 +1,4 @@
-package com.example.stayfit20
+package com.example.stayfit20.ui.activity
 
 // Inside your CalorieCalculator activity
 
@@ -10,6 +10,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.stayfit20.R
 
 class CalorieCalculator : AppCompatActivity() {
     private lateinit var ageInput: EditText

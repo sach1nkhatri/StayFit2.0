@@ -13,37 +13,37 @@
         android:theme="@style/Theme.StayFit20"
         tools:targetApi="31">
         <activity
-            android:name=".WorkoutPlanner"
+            android:name=".ui.activity.WorkoutPlanner"
             android:exported="true" />
         <activity
-            android:name=".UpdateTaskActivity"
+            android:name=".ui.activity.UpdateTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".TaskDetail"
+            android:name=".ui.activity.AddTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".AddTaskActivity"
+            android:name=".ui.activity.TaskViewActivity"
             android:exported="true" />
         <activity
-            android:name=".settings_activity"
+            android:name=".adapter.settings_activity"
             android:exported="true" />
         <activity
-            android:name=".SignInPage"
+            android:name=".ui.activity.SignInPage"
             android:exported="true" />
         <activity
-            android:name=".Dashboard"
+            android:name=".ui.activity.Dashboard"
             android:exported="true" />
         <activity
-            android:name=".BmiCalculator"
+            android:name=".ui.activity.BmiCalculator"
             android:exported="true" />
         <activity
-            android:name=".BmrCalculator"
+            android:name=".ui.activity.BmrCalculator"
             android:exported="true" />
         <activity
-            android:name=".CalorieCalculator"
+            android:name=".ui.activity.CalorieCalculator"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".adapter.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login"
+            android:name=".adapter.login"
             android:exported="true"/>
     </application>
 

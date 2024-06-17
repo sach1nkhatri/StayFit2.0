@@ -11,7 +11,7 @@
         android:background="@drawable/splash_bg"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context=".Dashboard">
+        tools:context=".ui.activity.Dashboard">
 
 
         <View

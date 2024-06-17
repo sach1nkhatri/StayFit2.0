@@ -1,4 +1,4 @@
-package com.example.stayfit20
+package com.example.stayfit20.ui.activity
 
 import android.os.Bundle
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.stayfit20.R
 
 class WorkoutPlanner : AppCompatActivity() {
 

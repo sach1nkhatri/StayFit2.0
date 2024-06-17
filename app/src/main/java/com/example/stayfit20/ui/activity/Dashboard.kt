@@ -1,12 +1,12 @@
-package com.example.stayfit20
+package com.example.stayfit20.ui.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.example.stayfit20.R
+import com.example.stayfit20.adapter.settings_activity
 
 
 class Dashboard : AppCompatActivity() {
@@ -47,7 +47,7 @@ class Dashboard : AppCompatActivity() {
         }
 
         taskBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, AddTaskActivity::class.java)
+            val intent = Intent(this@Dashboard, TaskViewActivity::class.java)
             startActivity(intent)
         }
 
