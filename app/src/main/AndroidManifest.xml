@@ -25,7 +25,7 @@
             android:name=".ui.activity.TaskViewActivity"
             android:exported="true" />
         <activity
-            android:name=".adapter.settings_activity"
+            android:name=".ui.activity.Settings_activity"
             android:exported="true" />
         <activity
             android:name=".ui.activity.SignInPage"
@@ -43,7 +43,7 @@
             android:name=".ui.activity.CalorieCalculator"
             android:exported="true" />
         <activity
-            android:name=".adapter.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,8 +52,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".adapter.login"
+            android:name=".ui.activity.login"
             android:exported="true"/>
     </application>
+    <uses-permission android:name="android.permission.INTERNET"
+        tools:ignore="ManifestOrder" />
 
 </manifest>

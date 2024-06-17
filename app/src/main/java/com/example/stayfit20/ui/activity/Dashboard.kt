@@ -6,7 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.stayfit20.R
-import com.example.stayfit20.adapter.settings_activity
+import com.example.stayfit20.ui.activity.Settings_activity
 
 
 class Dashboard : AppCompatActivity() {
@@ -52,7 +52,7 @@ class Dashboard : AppCompatActivity() {
         }
 
         setBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, settings_activity::class.java)
+            val intent = Intent(this@Dashboard, Settings_activity::class.java)
             startActivity(intent)
 
         }

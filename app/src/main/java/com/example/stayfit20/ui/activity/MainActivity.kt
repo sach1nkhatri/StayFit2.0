@@ -1,4 +1,4 @@
-package com.example.stayfit20.adapter
+package com.example.stayfit20.ui.activity
 
 
 import android.content.Intent
