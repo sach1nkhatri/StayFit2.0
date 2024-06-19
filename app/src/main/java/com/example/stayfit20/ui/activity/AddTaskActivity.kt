@@ -6,10 +6,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.stayfit20.R
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AddTaskActivity : AppCompatActivity() {
@@ -18,6 +17,7 @@ class AddTaskActivity : AppCompatActivity() {
     private lateinit var descriptionEditText: EditText
     private lateinit var saveButton: Button
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +32,12 @@ class AddTaskActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             saveNote()
         }
-
     }
 
     private fun saveNote() {
         val title = titleEditText.text.toString()
         val description = descriptionEditText.text.toString()
+        val userId = auth.currentUser?.uid
 
         if (title.isEmpty() && description.isEmpty()) {
             Toast.makeText(this, "Please enter a title or description", Toast.LENGTH_SHORT).show()
@@ -45,7 +45,8 @@ class AddTaskActivity : AppCompatActivity() {
             val note = hashMapOf(
                 "title" to title,
                 "description" to description,
-                "timestamp" to Timestamp.now()
+                "timestamp" to Timestamp.now(),
+                "userId" to userId
             )
 
             db.collection("notes")

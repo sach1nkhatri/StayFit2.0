@@ -1,5 +1,5 @@
-
 package com.example.stayfit20.ui.activity
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast

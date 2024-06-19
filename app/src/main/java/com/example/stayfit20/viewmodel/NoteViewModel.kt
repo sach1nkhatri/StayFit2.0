@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.stayfit20.model.NoteModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
 class NoteViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
     private var notesListener: ListenerRegistration? = null
 
     private val _notes = MutableLiveData<List<NoteModel>>()
@@ -25,8 +27,10 @@ class NoteViewModel : ViewModel() {
     }
 
     private fun fetchNotes() {
+        val userId = auth.currentUser?.uid ?: return
         _isLoading.value = true
         notesListener = db.collection("notes")
+            .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     _error.value = "Listen failed: ${e.message}"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfit20.R
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 
 class Settings_activity : AppCompatActivity() {
+
 
     private lateinit var logoutButton: Button
     private lateinit var userNameTextView: TextView
@@ -26,6 +28,7 @@ class Settings_activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
 
         // Initialize Firebase
@@ -73,7 +76,10 @@ class Settings_activity : AppCompatActivity() {
                     emailTextView.text = email
                     phoneTextView.text = phone
 
-                    Log.i("Settings_activity", "Data loaded: Name=$name, Email=$email, Phone=$phone")
+                    Log.i(
+                        "Settings_activity",
+                        "Data loaded: Name=$name, Email=$email, Phone=$phone"
+                    )
                 } else {
                     Log.e("Settings_activity", "User data does not exist for email: $email")
                 }

@@ -64,4 +64,8 @@
     </string-array>
 
     <string name="choose_your_goal">Choose your goal</string>
+    <string name="google_login">Google Login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Logout</string>
 </resources>
