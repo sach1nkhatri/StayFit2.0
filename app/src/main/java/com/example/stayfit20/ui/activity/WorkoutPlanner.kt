@@ -1,9 +1,10 @@
 package com.example.stayfit20.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,35 +12,35 @@ import com.example.stayfit20.R
 
 class WorkoutPlanner : AppCompatActivity() {
 
+    private lateinit var ageInput: EditText
+    private lateinit var calorieInput: EditText
+    private lateinit var generateBtn: Button
+    private lateinit var goalSpinner: Spinner
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_workout_planner)
         enableEdgeToEdge()
+        setContentView(R.layout.activity_workout_planner)
 
-        val goalSpinner: Spinner = findViewById(R.id.goal_spinner)
+        ageInput = findViewById(R.id.AgeInput)
+        calorieInput = findViewById(R.id.Calorieinput)
+        generateBtn = findViewById(R.id.generate_btn)
+        goalSpinner = findViewById(R.id.goal_spinner)
 
-        // Create an ArrayAdapter using the custom layout for the dropdown items
-        val adapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.goals_array,
-            R.layout.spinner_item
-        )
-
-        // Specify the custom layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.spinner_item)
-
-        // Apply the adapter to the spinner
+        val goals = resources.getStringArray(R.array.goals_array)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, goals)
         goalSpinner.adapter = adapter
 
-        // Set an OnItemSelectedListener to handle the default prompt display
-        goalSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                // No action needed, just handling the default prompt display
-            }
+        generateBtn.setOnClickListener {
+            val age = ageInput.text.toString().toInt()
+            val calories = calorieInput.text.toString().toInt()
+            val goal = goalSpinner.selectedItem.toString()
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // No action needed
+            val intent = Intent(this, WorkoutPlannedView::class.java).apply {
+                putExtra("AGE", age)
+                putExtra("CALORIES", calories)
             }
+            startActivity(intent)
         }
     }
 }

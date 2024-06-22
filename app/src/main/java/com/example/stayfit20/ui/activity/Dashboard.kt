@@ -6,7 +6,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.stayfit20.R
-import com.example.stayfit20.ui.activity.Settings_activity
 
 
 class Dashboard : AppCompatActivity() {
@@ -42,7 +41,7 @@ class Dashboard : AppCompatActivity() {
 
         }
         kcalBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, CalorieCalculator::class.java)
+            val intent = Intent(this@Dashboard, PedoMeter::class.java)
             startActivity(intent)
         }
 
