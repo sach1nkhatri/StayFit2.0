@@ -8,20 +8,36 @@
     android:background="@drawable/splash_bg"
     tools:context=".ui.activity.PedoMeter">
 
+    <EditText
+        android:id="@+id/et_step_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/square_cor"
+        android:hint="Enter step goal"
+        android:inputType="number"
+        android:padding="8dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:indeterminateOnly="false"
         android:progressDrawable="@drawable/circular_progress_bar"
         android:rotation="-90"
         style="?android:attr/progressBarStyleHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/et_step_goal"
         app:layout_constraintBottom_toTopOf="@id/tv_step_count"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="VectorDrawableCompat" />
 
     <TextView
@@ -34,14 +50,14 @@
         app:layout_constraintTop_toBottomOf="@id/progressBar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_start_reset"
+        app:layout_constraintBottom_toTopOf="@id/btn_start_pause"
         android:layout_marginBottom="16dp"/>
 
     <Button
-        android:id="@+id/btn_start_reset"
+        android:id="@+id/btn_start_pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start/Reset"
+        android:text="Start"
         app:layout_constraintTop_toBottomOf="@id/tv_step_count"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -54,7 +70,7 @@
         android:text="Distance: 0 m"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/btn_start_reset"
+        app:layout_constraintTop_toBottomOf="@id/btn_start_pause"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"/>
@@ -70,5 +86,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btn_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        app:layout_constraintTop_toBottomOf="@id/tv_time"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

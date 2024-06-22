@@ -12,6 +12,7 @@ import android.os.Handler
 import android.os.PowerManager
 import android.os.SystemClock
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -25,13 +26,17 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
     private lateinit var tvDistance: TextView
     private lateinit var tvTime: TextView
     private lateinit var progressBar: ProgressBar
-    private lateinit var btnStartReset: Button
+    private lateinit var btnStartPause: Button
+    private lateinit var btnReset: Button
+    private lateinit var etStepGoal: EditText
     private lateinit var sensorManager: SensorManager
     private var stepCounterSensor: Sensor? = null
     private var lightSensor: Sensor? = null
     private var isRunning = false
     private var stepCount: Long = 0
+    private var startStepCount: Long = 0
     private var startTime: Long = 0
+    private var pausedTime: Long = 0
     private val handler = Handler()
     private lateinit var powerManager: PowerManager
     private lateinit var wakeLock: PowerManager.WakeLock
@@ -50,7 +55,9 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         tvDistance = findViewById(R.id.tv_distance)
         tvTime = findViewById(R.id.tv_time)
         progressBar = findViewById(R.id.progressBar)
-        btnStartReset = findViewById(R.id.btn_start_reset)
+        btnStartPause = findViewById(R.id.btn_start_pause)
+        btnReset = findViewById(R.id.btn_reset)
+        etStepGoal = findViewById(R.id.et_step_goal)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
@@ -59,12 +66,16 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "PedoMeter::ProximityWakeLock")
 
-        btnStartReset.setOnClickListener {
+        btnStartPause.setOnClickListener {
             if (!isRunning) {
                 startPedometer()
             } else {
-                resetPedometer()
+                pausePedometer()
             }
+        }
+
+        btnReset.setOnClickListener {
+            resetPedometer()
         }
 
         ActivityCompat.requestPermissions(
@@ -78,16 +89,20 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         if (isRunning) {
             when (event?.sensor?.type) {
                 Sensor.TYPE_STEP_COUNTER -> {
-                    stepCount = event.values[0].toLong()
+                    if (startStepCount == 0L) {
+                        startStepCount = event.values[0].toLong()
+                    }
+                    stepCount = event.values[0].toLong() - startStepCount
                     updateUI()
                 }
                 Sensor.TYPE_LIGHT -> {
                     if (event.values[0] < LIGHT_THRESHOLD) {
-                        wakeLock.acquire(10*60*1000L /*10 minutes*/)
+                        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/)
                     } else if (wakeLock.isHeld) {
                         wakeLock.release()
                     }
                 }
+                // Handle other sensors if needed
             }
         }
     }
@@ -97,40 +112,89 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
     }
 
     private fun startPedometer() {
+        val stepGoalText = etStepGoal.text.toString()
+        if (stepGoalText.isNotEmpty()) {
+            val stepGoal = stepGoalText.toInt()
+            progressBar.max = stepGoal
+        }
+
         isRunning = true
-        startTime = SystemClock.elapsedRealtime()
+        startTime = if (pausedTime == 0L) {
+            SystemClock.elapsedRealtime()
+        } else {
+            SystemClock.elapsedRealtime() - pausedTime
+        }
+
+        startStepCount = 0L
         sensorManager.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_UI)
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_UI)
-        btnStartReset.text = "Reset"
+        btnStartPause.text = "Pause"
         handler.post(runnable)
     }
 
-    private fun resetPedometer() {
+    private fun pausePedometer() {
         isRunning = false
-        stepCount = 0
-        startTime = 0
+        pausedTime = SystemClock.elapsedRealtime() - startTime
         sensorManager.unregisterListener(this)
-        btnStartReset.text = "Start/Reset"
+        btnStartPause.text = "Start"
         handler.removeCallbacks(runnable)
-        updateUI()
         if (wakeLock.isHeld) {
             wakeLock.release()
         }
     }
 
+    private fun resetPedometer() {
+        pausePedometer()
+        stepCount = 0
+        startStepCount = 0
+        startTime = 0
+        pausedTime = 0
+        updateUI()
+    }
+
     private fun updateUI() {
         tvStepCount.text = "Steps: $stepCount"
         tvDistance.text = String.format("Distance: %.2f m", stepCount * STEP_LENGTH)
-        progressBar.progress = (stepCount % progressBar.max).toInt()
+
+        // Calculate progress percentage based on current step count
+        val progress = if (progressBar.max > 0) {
+            ((stepCount.toDouble() / progressBar.max) * 100).toInt()
+        } else {
+            0
+        }
+        progressBar.progress = progress
+
+        val elapsedMillis = SystemClock.elapsedRealtime() - startTime
+        tvTime.text = formatTime(elapsedMillis)
+    }
+
+    private fun formatTime(milliseconds: Long): String {
+        val seconds = (milliseconds / 1000) % 60
+        val minutes = (milliseconds / (1000 * 60)) % 60
+        val hours = (milliseconds / (1000 * 60 * 60)) % 24
+        return if (hours > 0) {
+            String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            String.format("%02d:%02d", minutes, seconds)
+        }
     }
 
     private val runnable = object : Runnable {
         override fun run() {
             if (isRunning) {
                 val elapsedMillis = SystemClock.elapsedRealtime() - startTime
-                tvTime.text = String.format("Time: %d s", elapsedMillis / 1000)
+                tvTime.text = formatTime(elapsedMillis)
                 handler.postDelayed(this, 1000)
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(runnable)
+        sensorManager.unregisterListener(this)
+        if (wakeLock.isHeld) {
+            wakeLock.release()
         }
     }
 }
