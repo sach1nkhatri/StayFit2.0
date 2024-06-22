@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
+import android.os.PowerManager
 import android.os.SystemClock
 import android.widget.Button
 import android.widget.ProgressBar
@@ -27,13 +28,17 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
     private lateinit var btnStartReset: Button
     private lateinit var sensorManager: SensorManager
     private var stepCounterSensor: Sensor? = null
+    private var lightSensor: Sensor? = null
     private var isRunning = false
     private var stepCount: Long = 0
     private var startTime: Long = 0
     private val handler = Handler()
+    private lateinit var powerManager: PowerManager
+    private lateinit var wakeLock: PowerManager.WakeLock
 
     companion object {
         private const val STEP_LENGTH = 0.78 // Average step length in meters
+        private const val LIGHT_THRESHOLD = 10.0 // Threshold for detecting low light
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +54,10 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+
+        powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        wakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "PedoMeter::ProximityWakeLock")
 
         btnStartReset.setOnClickListener {
             if (!isRunning) {
@@ -67,8 +76,19 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (isRunning) {
-            stepCount = event?.values?.get(0)?.toLong() ?: 0
-            updateUI()
+            when (event?.sensor?.type) {
+                Sensor.TYPE_STEP_COUNTER -> {
+                    stepCount = event.values[0].toLong()
+                    updateUI()
+                }
+                Sensor.TYPE_LIGHT -> {
+                    if (event.values[0] < LIGHT_THRESHOLD) {
+                        wakeLock.acquire(10*60*1000L /*10 minutes*/)
+                    } else if (wakeLock.isHeld) {
+                        wakeLock.release()
+                    }
+                }
+            }
         }
     }
 
@@ -80,6 +100,7 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         isRunning = true
         startTime = SystemClock.elapsedRealtime()
         sensorManager.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_UI)
         btnStartReset.text = "Reset"
         handler.post(runnable)
     }
@@ -92,6 +113,9 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         btnStartReset.text = "Start/Reset"
         handler.removeCallbacks(runnable)
         updateUI()
+        if (wakeLock.isHeld) {
+            wakeLock.release()
+        }
     }
 
     private fun updateUI() {
