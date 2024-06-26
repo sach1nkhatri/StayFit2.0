@@ -7,14 +7,17 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.stayfit20.ForgotPassword
 import com.example.stayfit20.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 class login : AppCompatActivity() {
+    lateinit var forgotPsw : TextView
     private lateinit var usernameInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var loginBtn: Button
@@ -39,6 +42,7 @@ class login : AppCompatActivity() {
         passwordInput = findViewById(R.id.password_input)
         loginBtn = findViewById(R.id.login_btn)
         signIn = findViewById(R.id.SignInBtn)
+        forgotPsw = findViewById(R.id.forgotPass)
         progressBar = findViewById(R.id.progress_bar)
 
         loginBtn.setOnClickListener {
@@ -61,6 +65,11 @@ class login : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please enter username and password.", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        forgotPsw.setOnClickListener {
+            val intent = Intent(this@login, ForgotPassword::class.java)
+            startActivity(intent)
         }
 
         signIn.setOnClickListener {
