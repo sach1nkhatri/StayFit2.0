@@ -1,6 +1,7 @@
 package com.example.stayfit20.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -13,6 +14,7 @@ import android.os.PowerManager
 import android.os.SystemClock
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -23,17 +25,20 @@ import com.example.stayfit20.R
 class PedoMeter : AppCompatActivity(), SensorEventListener {
 
     private lateinit var tvStepCount: TextView
+    private lateinit var tvStepGoal: TextView
     private lateinit var tvDistance: TextView
     private lateinit var tvTime: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var btnStartPause: Button
     private lateinit var btnReset: Button
     private lateinit var etStepGoal: EditText
+    private lateinit var stepGoalBtn: ImageButton
     private lateinit var sensorManager: SensorManager
     private var stepCounterSensor: Sensor? = null
     private var lightSensor: Sensor? = null
     private var isRunning = false
     private var stepCount: Long = 0
+    private var stepGoal: Long = 0
     private var startStepCount: Long = 0
     private var startTime: Long = 0
     private var pausedTime: Long = 0
@@ -52,12 +57,14 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         setContentView(R.layout.activity_pedo_meter)
 
         tvStepCount = findViewById(R.id.tv_step_count)
+        tvStepGoal = findViewById(R.id.tv_step_goal)
         tvDistance = findViewById(R.id.tv_distance)
         tvTime = findViewById(R.id.tv_time)
         progressBar = findViewById(R.id.progressBar)
         btnStartPause = findViewById(R.id.btn_start_pause)
         btnReset = findViewById(R.id.btn_reset)
         etStepGoal = findViewById(R.id.et_step_goal)
+        stepGoalBtn = findViewById(R.id.stepGoalBtn)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
@@ -78,31 +85,28 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
             resetPedometer()
         }
 
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
-            PackageManager.PERMISSION_GRANTED
-        )
+        stepGoalBtn.setOnClickListener {
+            setStepGoal()
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), 100)
+        }
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (isRunning) {
-            when (event?.sensor?.type) {
-                Sensor.TYPE_STEP_COUNTER -> {
-                    if (startStepCount == 0L) {
-                        startStepCount = event.values[0].toLong()
-                    }
-                    stepCount = event.values[0].toLong() - startStepCount
-                    updateUI()
-                }
-                Sensor.TYPE_LIGHT -> {
-                    if (event.values[0] < LIGHT_THRESHOLD) {
-                        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/)
-                    } else if (wakeLock.isHeld) {
-                        wakeLock.release()
-                    }
-                }
-                // Handle other sensors if needed
+    override fun onSensorChanged(event: SensorEvent) {
+        if (event.sensor.type == Sensor.TYPE_STEP_COUNTER && isRunning) {
+            if (startStepCount == 0L) {
+                startStepCount = event.values[0].toLong()
+            }
+            stepCount = event.values[0].toLong() - startStepCount
+            updateUI()
+        } else if (event.sensor.type == Sensor.TYPE_LIGHT && isRunning) {
+            val lightLevel = event.values[0]
+            if (lightLevel < LIGHT_THRESHOLD) {
+                wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/)
+            } else if (wakeLock.isHeld) {
+                wakeLock.release()
             }
         }
     }
@@ -112,19 +116,8 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
     }
 
     private fun startPedometer() {
-        val stepGoalText = etStepGoal.text.toString()
-        if (stepGoalText.isNotEmpty()) {
-            val stepGoal = stepGoalText.toInt()
-            progressBar.max = stepGoal
-        }
-
         isRunning = true
-        startTime = if (pausedTime == 0L) {
-            SystemClock.elapsedRealtime()
-        } else {
-            SystemClock.elapsedRealtime() - pausedTime
-        }
-
+        startTime = SystemClock.elapsedRealtime() - pausedTime
         startStepCount = 0L
         sensorManager.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_UI)
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_UI)
@@ -149,14 +142,28 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         startStepCount = 0
         startTime = 0
         pausedTime = 0
+        progressBar.progress = 0
+        etStepGoal.text.clear()
+        tvStepGoal.text = "Goal: 0 steps"
+        tvTime.text = "00:00"  // Reset the time display to 00:00
+        handler.post(runnable)  // Restart the runnable to update the time immediately
         updateUI()
+    }
+
+    private fun setStepGoal() {
+        val stepGoalText = etStepGoal.text.toString()
+        if (stepGoalText.isNotEmpty()) {
+            stepGoal = stepGoalText.toLong()
+            progressBar.max = stepGoal.toInt()
+            tvStepGoal.text = "Goal: $stepGoal steps"
+            updateUI()
+        }
     }
 
     private fun updateUI() {
         tvStepCount.text = "Steps: $stepCount"
         tvDistance.text = String.format("Distance: %.2f m", stepCount * STEP_LENGTH)
 
-        // Calculate progress percentage based on current step count
         val progress = if (progressBar.max > 0) {
             ((stepCount.toDouble() / progressBar.max) * 100).toInt()
         } else {
@@ -168,6 +175,7 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         tvTime.text = formatTime(elapsedMillis)
     }
 
+    @SuppressLint("DefaultLocale")
     private fun formatTime(milliseconds: Long): String {
         val seconds = (milliseconds / 1000) % 60
         val minutes = (milliseconds / (1000 * 60)) % 60
@@ -184,7 +192,10 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
             if (isRunning) {
                 val elapsedMillis = SystemClock.elapsedRealtime() - startTime
                 tvTime.text = formatTime(elapsedMillis)
-                handler.postDelayed(this, 1000)
+                handler.postDelayed(this, 100)
+            } else {
+                // Ensure time display updates immediately when reset
+                tvTime.text = "00:00"
             }
         }
     }
