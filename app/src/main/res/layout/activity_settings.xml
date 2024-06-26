@@ -132,7 +132,7 @@
         android:layout_marginTop="92dp"
         android:layout_marginEnd="12dp"
         android:src="@drawable/premium"
-        app:layout_constraintEnd_toStartOf="@+id/textView5"
+        app:layout_constraintEnd_toStartOf="@+id/Premium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
 
@@ -145,13 +145,13 @@
         android:layout_marginEnd="13dp"
         android:src="@drawable/aboutusicon"
         app:layout_constraintBottom_toTopOf="@+id/LogOut"
-        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        app:layout_constraintEnd_toStartOf="@+id/AboutUs"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/Premium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -166,7 +166,7 @@
         app:layout_constraintTop_toBottomOf="@+id/EditProfile" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/AboutUs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -179,8 +179,20 @@
         app:layout_constraintBottom_toTopOf="@+id/LogOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/Premium"
         app:layout_constraintVertical_bias="0.033" />
 
+    <!-- Progress bar for loading user data -->
+    <ProgressBar
+        android:id="@+id/userDataProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/circularCardView"
+        app:layout_constraintBottom_toTopOf="@+id/TextViewEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
