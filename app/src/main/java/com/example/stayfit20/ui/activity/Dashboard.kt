@@ -2,65 +2,126 @@ package com.example.stayfit20.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import com.example.stayfit20.Fragments.HomeFragment
+import com.example.stayfit20.Fragments.SettingsFragment
 import com.example.stayfit20.R
-
+import com.example.stayfit20.fragments.TaskFragment
+import com.example.stayfit20.databinding.ActivityDashboardBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class Dashboard : AppCompatActivity() {
-    private lateinit var bmiBtn: CardView
-    private lateinit var bmrBtn: CardView
-    private lateinit var kcalBtn: CardView
-    private lateinit var taskBtn: CardView
-    private lateinit var setBtn: CardView
-    private lateinit var workoutBtn: CardView
 
+    private lateinit var binding: ActivityDashboardBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_dashboard)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard)
 
-        bmiBtn = findViewById(R.id.bmi_cal)
-        bmrBtn = findViewById(R.id.bmr_cal)
-        kcalBtn = findViewById(R.id.kcal_cal)
-        taskBtn = findViewById(R.id.task_to_do)
-        setBtn = findViewById(R.id.settings_card)
-        workoutBtn = findViewById(R.id.workout_plan)
+        auth = FirebaseAuth.getInstance()
 
-
-        bmiBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, BmiCalculator::class.java)
-            startActivity(intent)
+        // Set up bottom navigation view listener
+        binding.buttonNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.homeNav -> {
+                    loadFragment(HomeFragment(), getString(R.string.home))
+                    true
+                }
+                R.id.TaskNav -> {
+                    loadFragment(TaskFragment(), getString(R.string.task))
+                    true
+                }
+                R.id.settingsNav -> {
+                    loadFragment(SettingsFragment(), getString(R.string.settings))
+                    true
+                }
+                else -> false
+            }
         }
 
-        bmrBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, BmrCalculator::class.java)
-            startActivity(intent)
-
-        }
-        kcalBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, PedoMeter::class.java)
-            startActivity(intent)
+        // Set click listener for the drawer button
+        binding.slideMenuBtn.setOnClickListener {
+            openDrawer()
         }
 
-        taskBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, TaskViewActivity::class.java)
-            startActivity(intent)
+        // Set up navigation item click listener for NavigationView
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.WorkoutPlannerNav -> {
+                    navigateToActivity(WorkoutPlanner::class.java)
+                    true
+                }
+                R.id.BMI_nav -> {
+                    navigateToActivity(BmiCalculator::class.java)
+                    true
+                }
+                R.id.BMR_nav -> {
+                    navigateToActivity(BmrCalculator::class.java)
+                    true
+                }
+                R.id.Pedometer_nav -> {
+                    navigateToActivity(PedoMeter::class.java)
+                    true
+                }
+                R.id.Log_Out -> {
+                    showLogoutConfirmationDialog()
+                    true
+                }
+                else -> false
+            }
         }
 
-        setBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, Settings_activity::class.java)
-            startActivity(intent)
-
+        // Load the default fragment
+        if (savedInstanceState == null) {
+            loadFragment(HomeFragment(), getString(R.string.home))
         }
-        workoutBtn.setOnClickListener {
-            val intent = Intent(this@Dashboard, WorkoutPlanner::class.java)
-            startActivity(intent)
+    }
 
+    private fun navigateToActivity(cls: Class<*>) {
+        val intent = Intent(this@Dashboard, cls)
+        startActivity(intent)
+    }
+
+    private fun loadFragment(fragment: Fragment, title: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frameLayout, fragment)
+            .commit()
+        updateTitle(title)
+    }
+
+    private fun updateTitle(title: String) {
+        binding.textViewDashboard.text = title
+    }
+
+    private fun openDrawer() {
+        Log.d("Dashboard", "openDrawer called")
+        binding.drawerLayout.openDrawer(binding.navigationView)
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("Logout")
+        builder.setMessage("Are you sure you want to logout?")
+        builder.setPositiveButton("Yes") { dialog, which ->
+            auth.signOut()
+            navigateToLogin()
         }
+        builder.setNegativeButton("No") { dialog, which ->
+            dialog.dismiss()
+        }
+        builder.create().show()
+    }
 
-
+    private fun navigateToLogin() {
+        val intent = Intent(this, login::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

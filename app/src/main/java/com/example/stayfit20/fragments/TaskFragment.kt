@@ -1,12 +1,14 @@
-package com.example.stayfit20.ui.activity
+package com.example.stayfit20.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,27 +16,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfit20.R
 import com.example.stayfit20.adapter.TaskAdapter
 import com.example.stayfit20.model.NoteModel
+import com.example.stayfit20.ui.activity.AddTaskActivity
+import com.example.stayfit20.ui.activity.UpdateTaskActivity
 import com.example.stayfit20.viewmodel.NoteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class TaskViewActivity : AppCompatActivity() {
+class TaskFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
 
     private val noteViewModel: NoteViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_task_view)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_task, container, false)
 
-        recyclerView = findViewById(R.id.taskRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView = view.findViewById(R.id.taskRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         taskAdapter = TaskAdapter(mutableListOf(), { note ->
             // Handle item click
-            val intent = Intent(this, UpdateTaskActivity::class.java).apply {
+            val intent = Intent(requireContext(), UpdateTaskActivity::class.java).apply {
                 putExtra("title", note.title)
                 putExtra("description", note.description)
                 putExtra("docId", note.docId)
@@ -44,7 +49,7 @@ class TaskViewActivity : AppCompatActivity() {
             if (direction == ItemTouchHelper.LEFT) {
                 showDeleteConfirmationDialog(note)
             } else if (direction == ItemTouchHelper.RIGHT) {
-                val intent = Intent(this, UpdateTaskActivity::class.java).apply {
+                val intent = Intent(requireContext(), UpdateTaskActivity::class.java).apply {
                     putExtra("title", note.title)
                     putExtra("description", note.description)
                     putExtra("docId", note.docId)
@@ -67,28 +72,30 @@ class TaskViewActivity : AppCompatActivity() {
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        noteViewModel.notes.observe(this, Observer { notes ->
+        noteViewModel.notes.observe(viewLifecycleOwner, Observer { notes ->
             taskAdapter.updateNotes(notes)
         })
 
-        noteViewModel.isLoading.observe(this, Observer { isLoading ->
+        noteViewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             // Show or hide a loading indicator if needed
         })
 
-        noteViewModel.error.observe(this, Observer { error ->
+        noteViewModel.error.observe(viewLifecycleOwner, Observer { error ->
             error?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         })
 
         // Handle FAB click to navigate to AddTaskActivity
-        findViewById<FloatingActionButton>(R.id.AddTaskBtn).setOnClickListener {
-            startActivity(Intent(this, AddTaskActivity::class.java))
+        view.findViewById<FloatingActionButton>(R.id.AddTaskBtn).setOnClickListener {
+            startActivity(Intent(requireContext(), AddTaskActivity::class.java))
         }
+
+        return view
     }
 
     private fun showDeleteConfirmationDialog(note: NoteModel) {
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(requireContext())
             .setTitle("Delete Note")
             .setMessage("Are you sure you want to delete this note?")
             .setPositiveButton("Yes") { dialog, _ ->

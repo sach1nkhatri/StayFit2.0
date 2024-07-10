@@ -66,6 +66,7 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         etStepGoal = findViewById(R.id.et_step_goal)
         stepGoalBtn = findViewById(R.id.stepGoalBtn)
 
+
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
@@ -87,6 +88,12 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
 
         stepGoalBtn.setOnClickListener {
             setStepGoal()
+        }
+
+
+        val backButton = findViewById<ImageButton>(R.id.back_button)
+        backButton.setOnClickListener {
+            finish() // Close the current activity and return to the previous activity
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {

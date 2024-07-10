@@ -9,11 +9,13 @@ import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import com.example.stayfit20.R
 
 class BmiCalculator : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_bmi_calculator)
 
         val ageInput = findViewById<EditText>(R.id.age_input)
