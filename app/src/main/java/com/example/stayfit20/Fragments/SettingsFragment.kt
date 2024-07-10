@@ -193,52 +193,50 @@ class SettingsFragment : Fragment() {
         val storageRef = storage.reference.child("user_images").child("$emailKey.jpg")
         progressBar.visibility = View.VISIBLE
 
-        storageRef.putFile(imageUri)
-            .addOnSuccessListener { taskSnapshot ->
-                // Image uploaded successfully, get download URL
-                storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    saveImageUrlToDatabase(uri.toString())
+        storageRef.putFile(imageUri).addOnSuccessListener {
+            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                val imageUrl = uri.toString()
+                userReference.child(emailKey).child("image_url").setValue(imageUrl).addOnCompleteListener { task ->
                     progressBar.visibility = View.GONE
-                    imageViewUser.setImageURI(imageUri) // Display selected image
-                }.addOnFailureListener { e ->
-                    progressBar.visibility = View.GONE
-                    Log.e("SettingsFragment", "Failed to get download URL: ${e.message}")
+                    if (task.isSuccessful) {
+                        Log.i("SettingsFragment", "Image URL saved to database")
+                        DownloadImageTask(imageViewUser, progressBar).execute(imageUrl)
+                    } else {
+                        Log.e("SettingsFragment", "Failed to save image URL: ${task.exception?.message}")
+                    }
                 }
             }
-            .addOnFailureListener { e ->
-                progressBar.visibility = View.GONE
-                Log.e("SettingsFragment", "Failed to upload image: ${e.message}")
-            }
+        }.addOnFailureListener { exception ->
+            progressBar.visibility = View.GONE
+            Log.e("SettingsFragment", "Image upload failed: ${exception.message}")
+        }
     }
 
-    private fun saveImageUrlToDatabase(imageUrl: String) {
-        val emailKey = currentUser?.email?.replace(".", ",") ?: return
-        userReference.child(emailKey).child("image_url").setValue(imageUrl)
-            .addOnSuccessListener {
-                Log.i("SettingsFragment", "Image URL saved to database: $imageUrl")
-            }
-            .addOnFailureListener { e ->
-                Log.e("SettingsFragment", "Failed to save image URL: ${e.message}")
-            }
-    }
+    private class DownloadImageTask(
+        private val imageView: ImageView,
+        private val progressBar: ProgressBar
+    ) : AsyncTask<String, Void, Bitmap?>() {
 
-    private class DownloadImageTask(private val imageView: ImageView, private val progressBar: ProgressBar) : AsyncTask<String, Void, Bitmap?>() {
+        override fun onPreExecute() {
+            super.onPreExecute()
+            progressBar.visibility = View.VISIBLE
+        }
+
         override fun doInBackground(vararg urls: String): Bitmap? {
-            val urlDisplay = urls[0]
-            var bitmap: Bitmap? = null
-            try {
-                val inputStream: InputStream = URL(urlDisplay).openStream()
-                bitmap = BitmapFactory.decodeStream(inputStream)
+            val url = urls[0]
+            return try {
+                val inputStream: InputStream = URL(url).openStream()
+                BitmapFactory.decodeStream(inputStream)
             } catch (e: Exception) {
-                Log.e("SettingsFragment", "Error downloading image: ${e.message}")
+                Log.e("DownloadImageTask", "Error downloading image: ${e.message}")
+                null
             }
-            return bitmap
         }
 
         override fun onPostExecute(result: Bitmap?) {
             progressBar.visibility = View.GONE
-            if (result != null) {
-                imageView.setImageBitmap(result)
+            result?.let {
+                imageView.setImageBitmap(it)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.stayfit20.fragments
+package com.example.stayfit20.Fragments
 
 import android.app.AlertDialog
 import android.content.Intent

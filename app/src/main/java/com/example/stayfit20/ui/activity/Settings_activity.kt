@@ -26,15 +26,11 @@ import java.net.URL
 
 class Settings_activity : AppCompatActivity() {
 
-    private lateinit var logoutButton: Button
-    private lateinit var PremiumBtn: TextView
-    private lateinit var aboutUsBtn: TextView
     private lateinit var userNameTextView: TextView
     private lateinit var emailTextView: TextView
     private lateinit var phoneTextView: TextView
     private lateinit var imageViewUser: ImageView
     private lateinit var progressBar: ProgressBar
-    private lateinit var userDataProgressBar: ProgressBar
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
@@ -68,36 +64,15 @@ class Settings_activity : AppCompatActivity() {
         userNameTextView = findViewById(R.id.textViewName)
         emailTextView = findViewById(R.id.TextViewEmail)
         phoneTextView = findViewById(R.id.phoneNumber)
-        logoutButton = findViewById(R.id.LogOut)
-        PremiumBtn = findViewById(R.id.Premium)
-        aboutUsBtn = findViewById(R.id.AboutUs)
         imageViewUser = findViewById(R.id.imageViewUser)
         progressBar = findViewById(R.id.progressBar)
-        userDataProgressBar = findViewById(R.id.userDataProgressBar)
 
         // Set click listeners
-        logoutButton.setOnClickListener {
-            showLogoutConfirmationDialog()
-        }
-
-        PremiumBtn.setOnClickListener {
-            val intent = Intent(this@Settings_activity, Premium::class.java)
-            startActivity(intent)
-        }
-
-        aboutUsBtn.setOnClickListener {
-            val intent = Intent(this@Settings_activity, AboutUs::class.java)
-            startActivity(intent)
-        }
-
-        // Set click listener for selecting an image
         imageViewUser.setOnClickListener {
             selectImage()
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
+        // Load user data and image
         currentUser = auth.currentUser
         if (currentUser != null) {
             loadUserData(currentUser!!.email)
@@ -106,14 +81,18 @@ class Settings_activity : AppCompatActivity() {
         }
     }
 
+    private fun navigateToLogin() {
+        val intent = Intent(this, login::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
     private fun loadUserData(email: String?) {
         if (email == null) {
             Log.e("Settings_activity", "Email is null")
             return
         }
-
-        // Show progress bar while loading data
-        userDataProgressBar.visibility = View.VISIBLE
 
         val emailKey = email.replace(".", ",")
         userReference.child(emailKey).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -130,47 +109,17 @@ class Settings_activity : AppCompatActivity() {
 
                     if (!imageUrl.isNullOrEmpty()) {
                         // Download and set image using AsyncTask
-                        DownloadImageTask(imageViewUser, userDataProgressBar).execute(imageUrl)
-                    } else {
-                        userDataProgressBar.visibility = View.GONE
+                        DownloadImageTask(imageViewUser, progressBar).execute(imageUrl)
                     }
-
-                    Log.i(
-                        "Settings_activity",
-                        "Data loaded: Name=$name, Email=$email, Phone=$phone, ImageUrl=$imageUrl"
-                    )
                 } else {
-                    userDataProgressBar.visibility = View.GONE
                     Log.e("Settings_activity", "User data does not exist for email: $email")
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                userDataProgressBar.visibility = View.GONE
                 Log.e("Settings_activity", "Failed to read user data: ${error.message}")
             }
         })
-    }
-
-    private fun showLogoutConfirmationDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Logout")
-        builder.setMessage("Are you sure you want to logout?")
-        builder.setPositiveButton("Yes") { dialog, which ->
-            auth.signOut()
-            navigateToLogin()
-        }
-        builder.setNegativeButton("No") { dialog, which ->
-            dialog.dismiss()
-        }
-        builder.create().show()
-    }
-
-    private fun navigateToLogin() {
-        val intent = Intent(this, login::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
     }
 
     private fun selectImage() {

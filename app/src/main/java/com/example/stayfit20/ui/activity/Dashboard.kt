@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.stayfit20.Fragments.HomeFragment
 import com.example.stayfit20.Fragments.SettingsFragment
 import com.example.stayfit20.R
-import com.example.stayfit20.fragments.TaskFragment
+import com.example.stayfit20.Fragments.TaskFragment
 import com.example.stayfit20.databinding.ActivityDashboardBinding
 import com.google.firebase.auth.FirebaseAuth
 
