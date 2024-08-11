@@ -46,9 +46,6 @@
             android:name=".ui.activity.AddTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.TaskViewActivity"
-            android:exported="true" />
-        <activity
             android:name=".ui.activity.Settings_activity"
             android:exported="true" />
         <activity

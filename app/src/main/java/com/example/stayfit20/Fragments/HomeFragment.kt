@@ -1,22 +1,19 @@
 package com.example.stayfit20.Fragments
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.cardview.widget.CardView
 import com.example.stayfit20.R
-import com.example.stayfit20.adapter.WidgetAdapter
-import com.example.stayfit20.model.WidgetItem
 import com.example.stayfit20.ui.activity.BmiCalculator
 import com.example.stayfit20.ui.activity.BmrCalculator
 import com.example.stayfit20.ui.activity.PedoMeter
 import com.example.stayfit20.ui.activity.WorkoutPlanner
-import androidx.cardview.widget.CardView
 
 class HomeFragment : Fragment() {
 
@@ -51,16 +48,7 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        val widgetList = listOf(
-            WidgetItem("This Is Your Task", Color.BLACK),
-            WidgetItem("This Is Your Calorie", Color.BLUE),
-            WidgetItem("This Is Your Steps", Color.GREEN),
-            WidgetItem("This Is Your Workout", Color.RED)
-        )
-        recyclerView.adapter = WidgetAdapter(widgetList)
-
+        // Handle card clicks
         val bmiCard: CardView = view.findViewById(R.id.bmi_cal)
         bmiCard.setOnClickListener {
             val intent = Intent(activity, BmiCalculator::class.java)
@@ -85,6 +73,10 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+
+
         return view
     }
-}
+
+
+    }

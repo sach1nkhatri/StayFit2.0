@@ -3,6 +3,7 @@ package com.example.stayfit20.ui.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -12,15 +13,20 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.PowerManager
 import android.os.SystemClock
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.stayfit20.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class PedoMeter : AppCompatActivity(), SensorEventListener {
 
@@ -46,6 +52,11 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
     private lateinit var powerManager: PowerManager
     private lateinit var wakeLock: PowerManager.WakeLock
 
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: FirebaseDatabase
+    private lateinit var userReference: DatabaseReference
+    private var currentUserEmail: String? = null
+
     companion object {
         private const val STEP_LENGTH = 0.78 // Average step length in meters
         private const val LIGHT_THRESHOLD = 10.0 // Threshold for detecting low light
@@ -53,9 +64,15 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_pedo_meter)
 
+        // Initialize Firebase components
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance()
+        userReference = database.reference.child("pedometer_data")
+        currentUserEmail = auth.currentUser?.email
+
+        // Initialize views
         tvStepCount = findViewById(R.id.tv_step_count)
         tvStepGoal = findViewById(R.id.tv_step_goal)
         tvDistance = findViewById(R.id.tv_distance)
@@ -65,7 +82,6 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         btnReset = findViewById(R.id.btn_reset)
         etStepGoal = findViewById(R.id.et_step_goal)
         stepGoalBtn = findViewById(R.id.stepGoalBtn)
-
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
@@ -89,7 +105,6 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         stepGoalBtn.setOnClickListener {
             setStepGoal()
         }
-
 
         val backButton = findViewById<ImageButton>(R.id.back_button)
         backButton.setOnClickListener {
@@ -141,6 +156,7 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         if (wakeLock.isHeld) {
             wakeLock.release()
         }
+        savePedometerData() // Save data when paused
     }
 
     private fun resetPedometer() {
@@ -207,12 +223,27 @@ class PedoMeter : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacks(runnable)
-        sensorManager.unregisterListener(this)
-        if (wakeLock.isHeld) {
-            wakeLock.release()
-        }
+    private fun savePedometerData() {
+        val emailKey = currentUserEmail?.replace(".", ",") ?: return
+        val pedometerData = PedometerData(
+            stepCount = stepCount,
+            stepGoal = stepGoal,
+            elapsedTimeMillis = SystemClock.elapsedRealtime() - startTime,
+            distance = stepCount * STEP_LENGTH
+        )
+        userReference.child(emailKey).setValue(pedometerData)
+            .addOnSuccessListener {
+                Log.i("PedoMeter", "Pedometer data saved successfully")
+            }
+            .addOnFailureListener { e ->
+                Log.e("PedoMeter", "Failed to save pedometer data: ${e.message}")
+            }
     }
+
+    data class PedometerData(
+        val stepCount: Long,
+        val stepGoal: Long,
+        val elapsedTimeMillis: Long,
+        val distance: Double
+    )
 }

@@ -5,20 +5,44 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfit20.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.GenericTypeIndicator
 
 class WorkoutPlannedView : AppCompatActivity() {
 
     private lateinit var workoutPlanTextView: TextView
     private lateinit var dietPlanTextView: TextView
 
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: FirebaseDatabase
+    private lateinit var userReference: DatabaseReference
+    private var currentUserEmail: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_workout_planned_view)
 
+        // Initialize Firebase components
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance()
+        userReference = database.reference.child("user_plans")
+        currentUserEmail = auth.currentUser?.email
+
         workoutPlanTextView = findViewById(R.id.workout_plan_text_view)
         dietPlanTextView = findViewById(R.id.diet_plan_text_view)
 
+        // Load the user's plans from Firebase
+        currentUserEmail?.let { email ->
+            loadPlansFromDatabase(email)
+        }
+
+        // Handle data submission if required
         val bundle = intent.extras
         if (bundle != null) {
             val age = bundle.getInt("AGE")
@@ -29,6 +53,9 @@ class WorkoutPlannedView : AppCompatActivity() {
 
             workoutPlanTextView.text = formatPlanText(workoutPlan)
             dietPlanTextView.text = formatPlanText(dietPlan)
+
+            // Save the plans to Firebase
+            savePlansToDatabase(workoutPlan, dietPlan)
         }
     }
 
@@ -92,5 +119,55 @@ class WorkoutPlannedView : AppCompatActivity() {
         return plan.entries.joinToString("\n\n") { (key, value) ->
             "$key:\n${value.lines().joinToString("\n") { "• $it" }}"
         }
+    }
+
+    private fun savePlansToDatabase(workoutPlan: Map<String, String>, dietPlan: Map<String, String>) {
+        val emailKey = currentUserEmail?.replace(".", ",") ?: return
+        val userPlans = mapOf(
+            "workout" to workoutPlan,
+            "diet" to dietPlan
+        )
+        userReference.child(emailKey).setValue(userPlans)
+            .addOnSuccessListener {
+                // Optionally log or show a success message
+            }
+            .addOnFailureListener { e ->
+                // Log or show an error message
+            }
+    }
+
+    private fun loadPlansFromDatabase(email: String) {
+        val emailKey = email.replace(".", ",")
+        userReference.child(emailKey).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val workoutPlanSnapshot = snapshot.child("workout")
+                    val dietPlanSnapshot = snapshot.child("diet")
+
+                    val workoutPlan: Map<String, String>? = workoutPlanSnapshot.getValue(object : GenericTypeIndicator<Map<String, String>>() {})
+                    val dietPlan: Map<String, String>? = dietPlanSnapshot.getValue(object : GenericTypeIndicator<Map<String, String>>() {})
+
+                    if (workoutPlan != null) {
+                        workoutPlanTextView.text = formatPlanText(workoutPlan)
+                    } else {
+                        workoutPlanTextView.text = "No workout plan available"
+                    }
+
+                    if (dietPlan != null) {
+                        dietPlanTextView.text = formatPlanText(dietPlan)
+                    } else {
+                        dietPlanTextView.text = "No diet plan available"
+                    }
+                } else {
+                    // Handle the case where no data exists for the user
+                    workoutPlanTextView.text = "No workout plan available"
+                    dietPlanTextView.text = "No diet plan available"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle possible errors
+            }
+        })
     }
 }
