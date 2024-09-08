@@ -6,21 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg"
-    tools:context=".BmrCalculator">
+    tools:context=".ui.activity.BmrCalculator">
 
     <TextView
         android:id="@+id/text_slideshow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/orange"
         android:gravity="center_horizontal"
         android:padding="16dp"
-        android:textSize="30sp"
-        android:fontFamily="@font/orange"
         android:text="@string/bmr_calculator"
         android:textColor="@color/white"
+        android:textSize="30sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="-8dp"
-        tools:layout_editor_absoluteY="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -140,11 +141,11 @@
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_back"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/splash_bg"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/splash_bg"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

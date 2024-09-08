@@ -1,4 +1,4 @@
-package com.example.stayfit20
+package com.example.stayfit20.ui.activity
 
 
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import android.app.Application
+import com.example.stayfit20.R
 import com.google.firebase.FirebaseApp
 
 class MyApp : Application() {

@@ -1,4 +1,4 @@
-package com.example.stayfit20
+package com.example.stayfit20.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.stayfit20.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
 
 class SignInPage : AppCompatActivity() {
 
@@ -23,7 +26,7 @@ class SignInPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in_page)
-
+        enableEdgeToEdge()
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
@@ -65,6 +68,7 @@ class SignInPage : AppCompatActivity() {
                         user?.updateProfile(profileUpdates)
                             ?.addOnCompleteListener { updateTask ->
                                 if (updateTask.isSuccessful) {
+                                    saveUserToDatabase(name, email, phone)
                                     Toast.makeText(this, "Sign-Up Successful", Toast.LENGTH_SHORT).show()
                                     // Optionally, navigate to another activity
                                     // val intent = Intent(this, AnotherActivity::class.java)
@@ -84,6 +88,15 @@ class SignInPage : AppCompatActivity() {
         }
     }
 
+    private fun saveUserToDatabase(name: String, email: String, phone: String) {
+        val database = FirebaseDatabase.getInstance()
+        val usersRef = database.getReference("users")
+        val userKey = email.replace(".", ",")
+
+        val user = User(name, email, phone)
+        usersRef.child(userKey).setValue(user)
+    }
+
     private fun validateInput(name: String, email: String, phone: String, password: String): Boolean {
         return name.isNotEmpty() && email.isNotEmpty() && phone.isNotEmpty() && password.isNotEmpty()
     }
@@ -93,4 +106,6 @@ class SignInPage : AppCompatActivity() {
         startActivity(intent)
         finish() // Optional: if you want to close the current activity
     }
+
+    data class User(val name: String, val email: String, val phone: String)
 }

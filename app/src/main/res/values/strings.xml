@@ -48,6 +48,80 @@
     <string name="tasks">Tasks</string>
     <string name="signin">SignIn</string>
     <string name="already_have_an_account">Already have an account?</string>
-    />
+    <string name="update_task">Update Task</string>
+    <string name="update_button">Update Note</string>
+    <string name="enter_your_bmi">Enter Your BMI</string>
+    <string name="enter_your_bmr">Enter Your BMR</string>
+    <string name="enter_your_calorie_goal">Enter Your Calorie Goal</string>
+    <string name="generate">Generate</string>
+
+
+    <string-array name="goals_array">
+        <item>Fat Loss</item>
+        <item>Weight Gain</item>
+        <item>Body Maintain</item>
+    </string-array>
+
+    <string name="choose_your_goal">Choose your goal</string>
+    <string name="google_login">Google Login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Logout</string>
+    <string name="enter_your_age">Enter Your Age</string>
+
+
+    <!-- Age 18-29 Workout Plan -->
+    <string name="age_18_29_monday">Warm-up: 10 minutes of jogging\nStrength Training:\n- Squats: 3 sets of 12 reps\n- Bench Press: 3 sets of 10 reps\n- Deadlift: 3 sets of 10 reps\n- Pull-Ups: 3 sets of 8 reps\nCool-down: 10 minutes of stretching</string>
+    <string name="age_18_29_tuesday">Warm-up: 10 minutes of jumping rope\nCardio:\n- Running: 30 minutes\nCore:\n- Plank: 3 sets of 1 minute\n- Russian Twists: 3 sets of 20 reps\n- Bicycle Crunches: 3 sets of 20 reps\nCool-down: 10 minutes of yoga</string>
+    <string name="age_18_29_wednesday">Rest or Light Activity (e.g., walking, yoga)</string>
+    <string name="age_18_29_thursday">Warm-up: 10 minutes of dynamic stretches\nStrength Training:\n- Overhead Press: 3 sets of 10 reps\n- Bent Over Rows: 3 sets of 12 reps\n- Leg Press: 3 sets of 12 reps\n- Dips: 3 sets of 10 reps\nCool-down: 10 minutes of stretching</string>
+    <string name="age_18_29_friday">Warm-up: 10 minutes of biking\nHIIT:\n- 20 seconds sprint, 40 seconds rest x 10\nCore:\n- Leg Raises: 3 sets of 15 reps\n- Mountain Climbers: 3 sets of 20 reps\n- Side Plank: 3 sets of 30 seconds each side\nCool-down: 10 minutes of stretching</string>
+    <string name="age_18_29_saturday">Outdoor Activity (e.g., hiking, cycling)</string>
+    <string name="age_18_29_sunday">Rest or Light Activity</string>
+
+    <!-- Age 30-49 Workout Plan -->
+    <string name="age_30_49_monday">Warm-up: 10 minutes of brisk walking\nStrength Training:\n- Lunges: 3 sets of 10 reps each leg\n- Incline Bench Press: 3 sets of 10 reps\n- Romanian Deadlift: 3 sets of 12 reps\n- Lat Pulldown: 3 sets of 12 reps\nCool-down: 10 minutes of stretching</string>
+    <string name="age_30_49_tuesday">Warm-up: 10 minutes of rowing machine\nCardio:\n- Swimming: 30 minutes\nCore:\n- Plank: 3 sets of 1 minute\n- Leg Raises: 3 sets of 15 reps\n- Oblique Crunches: 3 sets of 15 reps each side\nCool-down: 10 minutes of yoga</string>
+    <string name="age_30_49_wednesday">Rest or Light Activity (e.g., walking, yoga)</string>
+    <string name="age_30_49_thursday">Warm-up: 10 minutes of elliptical\nStrength Training:\n- Dumbbell Shoulder Press: 3 sets of 12 reps\n- Seated Rows: 3 sets of 12 reps\n- Leg Extensions: 3 sets of 15 reps\n- Tricep Pushdowns: 3 sets of 12 reps\nCool-down: 10 minutes of stretching</string>
+    <string name="age_30_49_friday">Warm-up: 10 minutes of light jogging\nHIIT:\n- 30 seconds high knees, 30 seconds rest x 10\nCore:\n- Sit-Ups: 3 sets of 20 reps\n- Russian Twists: 3 sets of 20 reps\n- Reverse Crunches: 3 sets of 15 reps\nCool-down: 10 minutes of stretching</string>
+    <string name="age_30_49_saturday">Outdoor Activity (e.g., tennis, biking)</string>
+    <string name="age_30_49_sunday">Rest or Light Activity</string>
+
+    <!-- Age 50+ Workout Plan -->
+    <string name="age_50_monday">Warm-up: 10 minutes of light walking\nStrength Training:\n- Bodyweight Squats: 3 sets of 15 reps\n- Chest Press: 3 sets of 12 reps\n- Leg Curls: 3 sets of 15 reps\n- Assisted Pull-Ups: 3 sets of 10 reps\nCool-down: 10 minutes of stretching</string>
+    <string name="age_50_tuesday">Warm-up: 10 minutes of stationary bike\nCardio:\n- Brisk Walking: 30 minutes\nCore:\n- Standing Oblique Crunches: 3 sets of 15 reps each side\n- Seated Leg Lifts: 3 sets of 15 reps\n- Standing Side Bends: 3 sets of 20 reps each side\nCool-down: 10 minutes of yoga</string>
+    <string name="age_50_wednesday">Rest or Light Activity (e.g., walking, yoga)</string>
+    <string name="age_50_thursday">Warm-up: 10 minutes of easy cycling\nStrength Training:\n- Dumbbell Bicep Curls: 3 sets of 12 reps\n- Dumbbell Rows: 3 sets of 12 reps\n- Leg Press: 3 sets of 15 reps\n- Overhead Tricep Extensions: 3 sets of 12 reps\nCool-down: 10 minutes of stretching</string>
+    <string name="age_50_friday">Warm-up: 10 minutes of gentle jogging\nLow-Impact HIIT:\n- 30 seconds march in place, 30 seconds rest x 10\nCore:\n- Pelvic Tilts: 3 sets of 15 reps\n- Seated Torso Twists: 3 sets of 20 reps\n- Bird Dogs: 3 sets of 10 reps each side\nCool-down: 10 minutes of stretching</string>
+    <string name="age_50_saturday">Outdoor Activity (e.g., gardening, walking in nature)</string>
+    <string name="age_50_sunday">Rest or Light Activity</string>
+
+    <!-- Diet Plan 1500-2200 Calories -->
+    <string name="diet_1500_2200_breakfast">Oatmeal with berries and nuts\nGreek yogurt with honey\nScrambled eggs with spinach and tomatoes</string>
+    <string name="diet_1500_2200_lunch">Grilled chicken salad with mixed greens\nTurkey sandwich on whole grain bread\nLentil soup with a side salad</string>
+    <string name="diet_1500_2200_dinner">Baked salmon with quinoa and steamed vegetables\nStir-fried tofu with brown rice and mixed vegetables\nGrilled shrimp with sweet potato and asparagus</string>
+    <string name="diet_1500_2200_snacks">Apple slices with peanut butter\nHummus with carrot and cucumber sticks\nHandful of almonds</string>
+
+    <!-- Diet Plan 2200-3000 Calories -->
+    <string name="diet_2200_3000_breakfast">Smoothie with banana, spinach, protein powder, and almond milk\nWhole grain toast with avocado and poached eggs\nCottage cheese with pineapple and chia seeds</string>
+    <string name="diet_2200_3000_lunch">Quinoa bowl with black beans, avocado, and salsa\nChicken wrap with hummus and vegetables\nBeef and vegetable stir-fry with brown rice</string>
+    <string name="diet_2200_3000_dinner">Grilled chicken breast with mashed potatoes and green beans\nPasta with marinara sauce and turkey meatballs\nRoasted pork tenderloin with couscous and broccoli</string>
+    <string name="diet_2200_3000_snacks">Greek yogurt with granola\nProtein bar\nTrail mix</string>
+
+    <!-- Diet Plan 3500+ Calories -->
+    <string name="diet_3500_plus_breakfast">Pancakes with maple syrup and blueberries\nOmelet with cheese, mushrooms, and bell peppers\nBagel with smoked salmon and cream cheese</string>
+    <string name="diet_3500_plus_lunch">Chicken burrito with rice, beans, and guacamole\nSalmon burger with sweet potato fries\nBeef stew with whole grain bread</string>
+    <string name="diet_3500_plus_dinner">Ribeye steak with baked potato and Caesar salad\nLasagna with garlic bread\nChicken Alfredo pasta with broccoli</string>
+    <string name="diet_3500_plus_snacks">Peanut butter and banana sandwich\nCheese and crackers\nProtein shake with added fruit</string>
+    <string name="scan_the_qr_for_payments">Scan the Qr for Payments</string>
+    <string name="pedometer">Pedometer</string>
+    <string name="logut">Logut</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="do_it">Do It</string>
+    <string name="description">Description</string>
+    <string name="task">Task</string>
+
 
 </resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/WorkoutPlannerNav"
+            android:icon="@drawable/workout_icon"
+            android:title="@string/workout_planner"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/BMI_nav"
+            android:icon="@drawable/point_icon"
+            android:title="@string/bmi_calculator"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/BMR_nav"
+            android:icon="@drawable/bmr_icon"
+            android:title="@string/bmr_calculator"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/Pedometer_nav"
+            android:icon="@drawable/pedometericon"
+            android:title="@string/pedometer"/>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/Log_Out"
+            android:icon="@drawable/logout"
+            android:title="@string/logut"/>
+    </group>
+</menu>
